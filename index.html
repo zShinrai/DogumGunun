@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Doğum Gününe Geri Sayım</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(180deg, #cfe9ff, #eaf6ff);
+      overflow: hidden;
+
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.85);
+      border-radius: 24px;
+      padding: 32px 24px 40px;
+      max-width: 420px;
+      width: 90%;
+      text-align: center;
+      box-shadow: 0 20px 40px rgba(0, 80, 160, 0.2);
+      animation: fadeUp 1.2s ease;
+    }
+
+    h1 {
+      margin: 0 0 10px;
+      color: #1e5fa3;
+      font-size: 1.8rem;
+    }
+
+    p {
+      display: none;
+    }
+
+    .countdown {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+    }
+
+    .time-box {
+      background: #e3f1ff;
+      border-radius: 16px;
+      padding: 14px 8px;
+    }
+
+    .number {
+      font-size: 1.6rem;
+      font-weight: 600;
+      color: #1e5fa3;
+    }
+
+    .label {
+      font-size: 0.75rem;
+      color: #5c86b5;
+      margin-top: 4px;
+    }
+
+    @keyframes fadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @media (max-width: 400px) {
+      h1 {
+        font-size: 1.5rem;
+      }
+
+      .number {
+        font-size: 1.3rem;
+      }
+    }
+
+    /* Tüm çiçekler için ortak ayarlar */
+    .flower {
+      position: absolute;
+      /* Sayfanın herhangi bir yerine koyabilmek için */
+      opacity: 0.6;
+      /* Hafif şeffaf olsun ki göz yormasın */
+      z-index: 0;
+      /* Yazıların arkasında kalsın */
+      font-size: 3rem;
+      /* Çiçeklerin büyüklüğü */
+      animation: float 6s ease-in-out infinite;
+      /* Animasyon adı ve süresi */
+      cursor: default;
+      /* Üzerine gelince imleç değişmesin */
+    }
+
+    /* Çiçeklerin tek tek konumları (f1, f2, f3...) */
+    /* top: yukarıdan boşluk, left: soldan boşluk */
+    .f1 {
+      top: 10%;
+      left: 10%;
+      animation-delay: 0s;
+    }
+
+    /* bottom: aşağıdan boşluk, right: sağdan boşluk */
+    .f2 {
+      bottom: 15%;
+      right: 10%;
+      animation-delay: 2s;
+    }
+
+    .f3 {
+      top: 20%;
+      right: 20%;
+      animation-delay: 4s;
+      font-size: 2rem;
+    }
+
+    .f4 {
+      bottom: 10%;
+      left: 20%;
+      animation-delay: 1s;
+      font-size: 2.5rem;
+    }
+
+    /* Yüzen Animasyon (Aşağı yukarı sallanma hareketi) */
+    @keyframes float {
+      0% {
+        transform: translateY(0px) rotate(0deg);
+      }
+
+      50% {
+        transform: translateY(-20px) rotate(10deg);
+        /* 20px yukarı çıkar ve hafif döner */
+      }
+
+      100% {
+        transform: translateY(0px) rotate(0deg);
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="flower f1">💙</div>
+  <div class="flower f2">💠</div>
+  <div class="flower f3">💙</div>
+  <div class="flower f4">💠</div>
+  <div class="card">
+    <h1>Doğum Gününe Geri Sayım 💙</h1>
+
+
+    <div class="countdown">
+      <div class="time-box">
+        <div class="number" id="days">0</div>
+        <div class="label">Gün</div>
+      </div>
+      <div class="time-box">
+        <div class="number" id="hours">0</div>
+        <div class="label">Saat</div>
+      </div>
+      <div class="time-box">
+        <div class="number" id="minutes">0</div>
+        <div class="label">Dakika</div>
+      </div>
+      <div class="time-box">
+        <div class="number" id="seconds">0</div>
+        <div class="label">Saniye</div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const targetDate = new Date(new Date().getFullYear(), 5, 20, 0, 0, 0); // 20 Haziran
+
+    function updateCountdown() {
+      const now = new Date();
+      let diff = targetDate - now;
+
+      if (diff < 0) {
+        document.querySelector('.card').innerHTML = '<h1>🎉 İyi ki doğdun! 🎉</h1><p>Bu özel gün senin 💙</p>';
+        return;
+      }
+
+      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+      const minutes = Math.floor((diff / (1000 * 60)) % 60);
+      const seconds = Math.floor((diff / 1000) % 60);
+
+      document.getElementById('days').textContent = days;
+      document.getElementById('hours').textContent = hours;
+      document.getElementById('minutes').textContent = minutes;
+      document.getElementById('seconds').textContent = seconds;
+    }
+
+    updateCountdown();
+    setInterval(updateCountdown, 1000);
+  </script>
+</body>
+
+</html>
